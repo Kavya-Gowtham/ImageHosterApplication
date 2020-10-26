@@ -5,15 +5,22 @@ import ImageHoster.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 public class UserService {
+
+    public static final String PASSWORD_Limit = "((?=.*\\d)(?=.*[A-Za-z])(?=.*[@#$%]).{3,20})";
 
     @Autowired
     private UserRepository userRepository;
 
     //Call the registerUser() method in the UserRepository class to persist the user record in the database
-    public void registerUser(User newUser) {
-        userRepository.registerUser(newUser);
+    public void registerUser(User newUser) { userRepository.registerUser(newUser); }
+
+    //This method returns true if the regex matches else returns false
+    public boolean validatePassword(String password){
+        return (Pattern.compile(PASSWORD_Limit)).matcher(password).matches();
     }
 
     //Since we did not have any user in the database, therefore the user with username 'upgrad' and password 'password' was hard-coded
